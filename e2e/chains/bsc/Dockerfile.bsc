@@ -7,10 +7,13 @@ RUN apk add --no-cache make cmake gcc musl-dev linux-headers git bash build-base
 
 ENV CGO_CFLAGS="-O -D__BLST_PORTABLE__"
 ENV CGO_CFLAGS_ALLOW="-O -D__BLST_PORTABLE__"
+ENV GOFLAGS='"-gcflags=all=-N -l"'
 RUN echo v15
 RUN cd / && git clone --depth 1 -b ${GIT_CHECKOUT_BRANCH} ${GIT_SOURCE} \
-    && cd ./bsc && make geth
+    && cd ./bsc && sed -i s/,--strip-all// build/ci.go && make geth
 
 RUN mv /bsc/build/bin/geth /usr/local/bin/
 
 EXPOSE 30311 30311/udp
+
+RUN go install github.com/go-delve/delve/cmd/dlv@latest

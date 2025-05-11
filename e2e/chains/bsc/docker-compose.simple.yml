@@ -62,6 +62,7 @@ services:
     env_file: .env
     ports:
       - 8545:8545
+      - 2345:2345
     environment:
       NODE_ID: bsc-rpc
     networks:
@@ -77,6 +78,7 @@ services:
     env_file: .env2
     ports:
       - 8645:8545
+      - 2445:2345
     environment:
       NODE_ID: bsc-rpc2
     networks:

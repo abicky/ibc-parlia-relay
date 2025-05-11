@@ -13,5 +13,6 @@ RUN cd /root/genesis && forge install --no-git --no-commit foundry-rs/forge-std@
 COPY genesis/ /root/genesis/
 
 COPY --from=bsc-geth:docker-local /usr/local/bin/geth /usr/local/bin/geth
+COPY --from=bsc-geth:docker-local /go/bin/dlv /usr/local/bin/dlv
 
 ENTRYPOINT [ "/bin/bash" ]
