@@ -6,4 +6,4 @@ services:
       args:
         GIT_SOURCE: https://github.com/bnb-chain/bsc
         GIT_CHECKOUT_BRANCH: v1.5.10
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64

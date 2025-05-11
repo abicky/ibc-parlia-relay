@@ -58,7 +58,7 @@ services:
     command: /root/scripts/bootstrap.sh
 
   bsc-rpc: # This is the bootstrap node
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     ports:
       - 8545:8545
@@ -71,10 +71,10 @@ services:
       - bsc-rpc:/root/.ethereum
       - ./scripts:/scripts
       - ./config:/config
-    command: ash /scripts/bsc-rpc.sh
+    command: bash /scripts/bsc-rpc.sh
 
   bsc-rpc2: # This is the bootstrap node
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     ports:
       - 8645:8545
@@ -87,10 +87,10 @@ services:
       - bsc-rpc2:/root/.ethereum
       - ./scripts:/scripts
       - ./config:/config
-    command: ash /scripts/bsc-rpc.sh
+    command: bash /scripts/bsc-rpc.sh
 
   bsc-validator1-1:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     environment:
       NODE_ID: bsc-validator1
@@ -100,10 +100,10 @@ services:
     volumes:
       - bsc-validator1-1:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator1-2:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     environment:
       NODE_ID: bsc-validator2
@@ -113,10 +113,10 @@ services:
     volumes:
       - bsc-validator1-2:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator1-3:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     environment:
       NODE_ID: bsc-validator3
@@ -126,10 +126,10 @@ services:
     volumes:
       - bsc-validator1-3:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator1-4:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     environment:
       NODE_ID: bsc-validator4
@@ -139,10 +139,10 @@ services:
     volumes:
       - bsc-validator1-4:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator1-5:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env
     environment:
       NODE_ID: bsc-validator5
@@ -152,49 +152,55 @@ services:
     volumes:
       - bsc-validator1-5:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator2-1:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     environment:
       NODE_ID: bsc-validator1
       BOOTSTRAP_HOST: bsc-rpc2
+    ports:
+      - 2446:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-1:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator2-2:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     environment:
       NODE_ID: bsc-validator2
       BOOTSTRAP_HOST: bsc-rpc2
+    ports:
+      - 2447:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-2:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator2-3:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     environment:
       NODE_ID: bsc-validator3
       BOOTSTRAP_HOST: bsc-rpc2
+    ports:
+      - 2448:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-3:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator2-4:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     environment:
       NODE_ID: bsc-validator2
@@ -204,10 +210,10 @@ services:
     volumes:
       - bsc-validator2-4:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
   bsc-validator2-5:
-    image: bsc-geth:docker-local
+    image: bsc-geth:docker-local-arm64
     env_file: .env2
     environment:
       NODE_ID: bsc-validator2
@@ -217,7 +223,7 @@ services:
     volumes:
       - bsc-validator2-5:/root/.ethereum
       - ./scripts:/scripts
-    command: ash /scripts/bsc-validator.sh
+    command: bash /scripts/bsc-validator.sh
 
 networks:
   bsc:

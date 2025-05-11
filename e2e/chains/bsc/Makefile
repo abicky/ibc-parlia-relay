@@ -15,4 +15,5 @@ network:
 
 .PHONY:network-down
 network-down:
-	docker compose -f docker-compose.simple.yml down -v
+#	docker compose -f docker-compose.simple.yml down -v
+	docker compose -f docker-compose.simple.yml down bsc-rpc2 bsc-validator2-1 bsc-validator2-2 bsc-validator2-3

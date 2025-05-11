@@ -20,7 +20,9 @@ async function deploy(deployer, contractName, args = []) {
     const factory = await hre.ethers.getContractFactory(contractName);
     console.log(`Contract ${contractName} deploy start`);
     const contract = await factory.connect(deployer).deploy(...args);
+    console.log(`waitForDeployment`);
     await contract.waitForDeployment();
+    console.log(`saveAddrss`);
     saveAddress(contractName, contract)
     return contract;
 }
