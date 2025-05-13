@@ -62,7 +62,6 @@ services:
     env_file: .env
     ports:
       - 8545:8545
-      - 2345:2345
     environment:
       NODE_ID: bsc-rpc
     networks:
@@ -72,13 +71,16 @@ services:
       - ./scripts:/scripts
       - ./config:/config
     command: bash /scripts/bsc-rpc.sh
+    healthcheck:
+      test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+      interval: "5s"
+      start_period: "10s"
 
   bsc-rpc2: # This is the bootstrap node
     image: bsc-geth:docker-local-arm64
     env_file: .env2
     ports:
       - 8645:8545
-      - 2445:2345
     environment:
       NODE_ID: bsc-rpc2
     networks:
@@ -88,6 +90,10 @@ services:
       - ./scripts:/scripts
       - ./config:/config
     command: bash /scripts/bsc-rpc.sh
+    healthcheck:
+      test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+      interval: "5s"
+      start_period: "10s"
 
   bsc-validator1-1:
     image: bsc-geth:docker-local-arm64
@@ -101,6 +107,12 @@ services:
       - bsc-validator1-1:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # depends_on:
+    #   - bsc-rpc
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
 
   bsc-validator1-2:
     image: bsc-geth:docker-local-arm64
@@ -114,6 +126,12 @@ services:
       - bsc-validator1-2:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc
 
   bsc-validator1-3:
     image: bsc-geth:docker-local-arm64
@@ -127,6 +145,12 @@ services:
       - bsc-validator1-3:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc
 
   bsc-validator1-4:
     image: bsc-geth:docker-local-arm64
@@ -140,6 +164,12 @@ services:
       - bsc-validator1-4:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc
 
   bsc-validator1-5:
     image: bsc-geth:docker-local-arm64
@@ -153,6 +183,12 @@ services:
       - bsc-validator1-5:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc
 
   bsc-validator2-1:
     image: bsc-geth:docker-local-arm64
@@ -160,14 +196,18 @@ services:
     environment:
       NODE_ID: bsc-validator1
       BOOTSTRAP_HOST: bsc-rpc2
-    ports:
-      - 2446:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-1:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc2
 
   bsc-validator2-2:
     image: bsc-geth:docker-local-arm64
@@ -175,14 +215,18 @@ services:
     environment:
       NODE_ID: bsc-validator2
       BOOTSTRAP_HOST: bsc-rpc2
-    ports:
-      - 2447:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-2:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc2
 
   bsc-validator2-3:
     image: bsc-geth:docker-local-arm64
@@ -190,14 +234,18 @@ services:
     environment:
       NODE_ID: bsc-validator3
       BOOTSTRAP_HOST: bsc-rpc2
-    ports:
-      - 2448:2345
     networks:
       - bsc2
     volumes:
       - bsc-validator2-3:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc2
 
   bsc-validator2-4:
     image: bsc-geth:docker-local-arm64
@@ -211,6 +259,12 @@ services:
       - bsc-validator2-4:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "10s"
+    # depends_on:
+    #   - bsc-rpc2
 
   bsc-validator2-5:
     image: bsc-geth:docker-local-arm64
@@ -224,6 +278,20 @@ services:
       - bsc-validator2-5:/root/.ethereum
       - ./scripts:/scripts
     command: bash /scripts/bsc-validator.sh
+    # healthcheck:
+    #   test: ["CMD", "bash", "/scripts/healthcheck.sh"]
+    #   interval: "5s"
+    #   start_period: "15s"
+    # depends_on:
+    #   - bsc-rpc2
+
+  autoheal:
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   bsc:
