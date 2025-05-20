@@ -1,7 +1,7 @@
 .PHONY:deploy
 deploy:
 	npm i
-	npx hardhat run ./scripts/deploy.js --network bsc_local1
+#	npx hardhat run ./scripts/deploy.js --network bsc_local1
 	npx hardhat run ./scripts/deploy.js --network bsc_local2
 
 .PHONY:test

@@ -14,10 +14,20 @@ done
 
 ETHSTATS=""
 
-# dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /usr/local/bin/geth -- --config ${DATA_DIR}/config.toml --datadir ${DATA_DIR} --netrestrict ${CLUSTER_CIDR} \
+dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /usr/local/bin/geth -- \
+  --config ${DATA_DIR}/config.toml \
+  --datadir ${DATA_DIR} \
+  --netrestrict ${CLUSTER_CIDR} \
+  --state.scheme=path \
+  --gcmode=full \
+  --verbosity ${VERBOSE} \
+  --nousb ${ETHSTATS} \
+  --unlock ${unlock_sequences} \
+  --password /dev/null \
+  --ipcpath /gethipc \
+  --override.fixedturnlength 2 \
+  --history.state 128
+# Use exec to handle signals
+# exec geth --config ${DATA_DIR}/config.toml --datadir ${DATA_DIR} --netrestrict ${CLUSTER_CIDR} \
 # 	--state.scheme=hash --db.engine=leveldb --verbosity ${VERBOSE} --nousb ${ETHSTATS} \
 # 	--unlock ${unlock_sequences} --password /dev/null --ipcpath /gethipc --override.fixedturnlength 2
-# Use exec to handle signals
-exec geth --config ${DATA_DIR}/config.toml --datadir ${DATA_DIR} --netrestrict ${CLUSTER_CIDR} \
-	--state.scheme=hash --db.engine=leveldb --verbosity ${VERBOSE} --nousb ${ETHSTATS} \
-	--unlock ${unlock_sequences} --password /dev/null --ipcpath /gethipc --override.fixedturnlength 2
