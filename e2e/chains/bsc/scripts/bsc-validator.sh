@@ -11,7 +11,7 @@ echo "validator id: ${HOST_IP}"
 
 ETHSTATS=""
 dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /usr/local/bin/geth -- --config ${DATA_DIR}/config.toml --datadir ${DATA_DIR} --netrestrict ${CLUSTER_CIDR} \
-	--verbosity ${VERBOSE} --nousb ${ETHSTATS} --state.scheme=path \
+	--verbosity ${VERBOSE} --nousb ${ETHSTATS} --state.scheme hash --db.engine=leveldb \
 	--bootnodes enode://${BOOTSTRAP_PUB_KEY}@${BOOTSTRAP_IP}:${BOOTSTRAP_TCP_PORT} \
 	--mine --miner.etherbase=${VALIDATOR_ADDR} -unlock ${VALIDATOR_ADDR} --password /dev/null --blspassword /scripts/wallet_password.txt \
 	--light.serve 50 --pprof.addr 0.0.0.0 --metrics \

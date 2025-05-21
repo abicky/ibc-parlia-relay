@@ -18,7 +18,7 @@ dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec /us
   --config ${DATA_DIR}/config.toml \
   --datadir ${DATA_DIR} \
   --netrestrict ${CLUSTER_CIDR} \
-  --state.scheme=path \
+  --state.scheme hash --db.engine=leveldb \
   --gcmode=full \
   --verbosity ${VERBOSE} \
   --nousb ${ETHSTATS} \
